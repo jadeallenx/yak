@@ -12,6 +12,7 @@ const (
 	Script assettype = iota
 	Image
 	CSS
+	Link
 )
 
 type Asset struct {
@@ -20,10 +21,10 @@ type Asset struct {
 }
 
 type Page struct {
-	r        *io.Reader // raw content
+	r        io.Reader  // raw content
 	c        *html.Node // parsed (cooked) content
 	parent   *Page
 	loc      *url.URL
 	children []*Page
-	assets   []Asset
+	assets   []*Asset
 }
