@@ -1,8 +1,10 @@
 package yak
 
 import (
+	"code.google.com/p/go.net/html"
 	"crypto/tls"
 	"errors"
+	"fmt"
 	"net/http"
 )
 
@@ -21,7 +23,17 @@ func GetPage(p *Page) error {
 	}
 	defer resp.Body.Close()
 
-	p.r = resp.Body
+	// Got *something* in the 200 range. Let's be optimistic and (try to) parse it.
+	if resp.StatusCode > 199 && resp.StatusCode < 300 {
+		p.r = resp.Body
+		p.c, err = html.Parse(p.r)
+		if err != nil {
+			return err
+		}
+	} else {
+        // Got something other than a 200, so just error
+		return fmt.Errorf("Status code: %v", resp.StatusCode)
+	}
 
 	return nil
 }
