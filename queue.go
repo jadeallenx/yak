@@ -2,23 +2,29 @@ package yak
 
 import (
 	"container/list"
+	"sync"
 )
 
 // Implement a simple FIFO queue
 
 type Queue struct {
+	*sync.Mutex
 	*list.List
 }
 
 func NewQueue() *Queue {
-	return &Queue{list.New()}
+	return &Queue{&sync.Mutex{}, list.New()}
 }
 
 func (q *Queue) Enqueue(v interface{}) {
+	q.Lock()
 	q.PushBack(v)
+	q.Unlock()
 }
 
 func (q *Queue) Dequeue() interface{} {
+	q.Lock()
+	defer q.Unlock()
 	e := q.Front()
 	if e == nil {
 		return nil
@@ -28,5 +34,7 @@ func (q *Queue) Dequeue() interface{} {
 }
 
 func (q *Queue) Empty() bool {
-    return q.Len() == 0
+	q.Lock()
+	defer q.Unlock()
+	return q.Len() == 0
 }

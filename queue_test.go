@@ -2,6 +2,7 @@ package yak
 
 import (
 	"testing"
+    "time"
 )
 
 func TestNewQueue(t *testing.T) {
@@ -38,6 +39,32 @@ func TestEnqueue(t *testing.T) {
 	if q2.Empty() != false {
 		t.Fatal("Expected false, got", q2.Empty())
 	}
+}
+
+func TestAsyncEnqueue(t *testing.T) {
+	q := NewQueue()
+
+	v := []int{1, 2, 3}
+	s := []string{"foo", "bar", "baz"}
+
+	for i, _ := range v {
+		go q.Enqueue(v[i])
+		go q.Enqueue(s[i])
+	}
+
+    time.Sleep(10 * time.Millisecond)
+
+	r := q.Dequeue()
+	if r != 1 {
+		t.Fatalf("Expected 1, got %v", r)
+	}
+
+	r = q.Dequeue()
+	if r != "foo" {
+		t.Fatalf("Expected 'foo', got '%v'", r)
+	}
+
+
 }
 
 func TestDequeue(t *testing.T) {
