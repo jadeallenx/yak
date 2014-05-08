@@ -18,7 +18,7 @@ func TestGetPage(t *testing.T) {
 	p := &Page{loc: u}
 	err := GetPage(p)
 	if err != nil {
-		t.Fatal("Expected non-nil, got", err)
+		t.Fatal("Expected nil, got", err)
 	}
 }
 
@@ -27,7 +27,18 @@ func TestGetPageSecure(t *testing.T) {
 	p := &Page{loc: u}
 	err := GetPage(p)
 	if err != nil {
-		t.Fatal("Expected non-nil, got", err)
+		t.Fatal("Expected nil, got", err)
 	}
 }
 
+func Test404Page(t *testing.T) {
+	u, _ := url.Parse("http://httpstat.us/404")
+	p := &Page{loc: u}
+	err := GetPage(p)
+	if err == nil {
+		t.Fatal("Expected err, got nil")
+	}
+    if p.c != nil {
+        t.Fatal("Expected no parsed content")
+    }
+}
