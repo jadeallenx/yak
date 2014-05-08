@@ -127,7 +127,6 @@ func walk(n *html.Node, p *Page, v Visit) error {
 		err := v(c, p)
 		if err != nil {
 			return err
-			break
 		}
 		walk(c, p, v)
 	}

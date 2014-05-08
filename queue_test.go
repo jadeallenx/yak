@@ -82,7 +82,7 @@ func TestDequeue(t *testing.T) {
 	}
 	v = q1.Dequeue()
 	if v != nil {
-		t.Fatal("expected nil, got %v", v)
+		t.Fatalf("expected nil, got %v", v)
 	}
 	if q1.Empty() != true {
 		t.Fatal("expected true, got", q1.Empty())
