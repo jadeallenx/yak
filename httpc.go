@@ -4,7 +4,7 @@ import (
 	"code.google.com/p/go.net/html"
 	"crypto/tls"
 	"errors"
-	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -14,10 +14,10 @@ var tr = &http.Transport{
 var client = &http.Client{Transport: tr}
 
 func GetPage(p *Page) error {
-	if p.loc == nil {
+	if p.Loc == nil {
 		return errors.New("WARNING: location is nil!")
 	}
-	resp, err := client.Get(p.loc.String())
+	resp, err := client.Get(p.Loc.String())
 	if err != nil {
 		return err
 	}
@@ -28,11 +28,12 @@ func GetPage(p *Page) error {
 		p.r = resp.Body
 		p.c, err = html.Parse(p.r)
 		if err != nil {
-			return err
+            log.Println(err)
+			return nil
 		}
 	} else {
         // Got something other than a 200, so just error
-		return fmt.Errorf("Status code: %v", resp.StatusCode)
+		log.Printf("WARNING: %v returned status code: %v", p.Loc.String(), resp.StatusCode)
 	}
 
 	return nil
