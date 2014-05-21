@@ -36,11 +36,11 @@ func generate_page(r *rand.Rand, baseUrl string, baseOnly bool) *Page {
 
 	p.c, _ = html.Parse(p.r)
 
-    if baseOnly {
-	    p.Loc, _ = url.Parse(baseUrl)
-    } else {
-	    p.Loc, _ = url.Parse(baseUrl + "/" + strconv.FormatInt(r.Int63n(10000), 36))
-    }
+	if baseOnly {
+		p.Loc, _ = url.Parse(baseUrl)
+	} else {
+		p.Loc, _ = url.Parse(baseUrl + "/" + strconv.FormatInt(r.Int63n(10000), 36))
+	}
 
 	for i := r.Intn(5); i != 0; i-- {
 		at, ext := chooseType(r)

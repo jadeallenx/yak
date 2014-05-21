@@ -1,9 +1,9 @@
 package main
 
 import (
-    "github.com/mrallen1/yak"
 	"code.google.com/p/go.net/html"
 	"fmt"
+	"github.com/mrallen1/yak"
 	"log"
 	"net/url"
 	"os"
@@ -13,14 +13,14 @@ func main() {
 	q := yak.NewQueue()
 	root := &yak.Page{}
 	var err error
-    m := make(map[string]bool)
+	m := make(map[string]bool)
 	for _, rawurl := range os.Args {
 		root.Loc, err = url.Parse(rawurl)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-        m[root.Loc.String()] = true
+		m[root.Loc.String()] = true
 		q.Enqueue(root)
 	}
 
@@ -29,9 +29,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-    yak.PrettyPrint(root, 1)
+	yak.PrettyPrint(root, 1)
 
-    fmt.Println("Done")
+	fmt.Println("Done")
 }
 
 func process(q *yak.Queue, m map[string]bool) error {
@@ -51,18 +51,18 @@ func process(q *yak.Queue, m map[string]bool) error {
 	}
 
 	for _, ch := range p.Children {
-        if !m[ch.Loc.String()] {
-            m[ch.Loc.String()] = true
-		    q.Enqueue(ch)
-        }
+		if !m[ch.Loc.String()] {
+			m[ch.Loc.String()] = true
+			q.Enqueue(ch)
+		}
 	}
 
-    log.Println("Queue length:", q.Len())
+	log.Println("Queue length:", q.Len())
 
 	err = process(q, m)
-    if err != nil {
-        return err
-    }
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -157,4 +157,3 @@ func filterf(n *html.Node, p *yak.Page) error {
 	}
 	return nil
 }
-
