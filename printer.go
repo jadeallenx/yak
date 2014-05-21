@@ -20,18 +20,18 @@ func aType2String(t Assettype) string {
 }
 
 func PrettyPrint(p *Page, generation int) {
-	fmt.Println(strings.Repeat(">", generation) + " " + p.Loc.String())
-	fmt.Println(strings.Repeat(" ", generation) + "Assets:")
+	fmt.Println(strings.Repeat(" ", generation) + strings.Repeat(">", generation) + " " + p.Loc.String())
+	fmt.Println(strings.Repeat("  ", generation) + "Assets:")
 	if len(p.Assets) > 0 {
 		for _, a := range p.Assets {
 			if a.Loc != nil {
-				fmt.Println(strings.Repeat("  ", generation) + aType2String(a.Atype) + " (" + a.Loc.String() + ")")
+				fmt.Println(strings.Repeat("    ", generation) + aType2String(a.Atype) + " (" + a.Loc.String() + ")")
 			} else {
-				fmt.Println(strings.Repeat("  ", generation) + aType2String(a.Atype))
+				fmt.Println(strings.Repeat("    ", generation) + aType2String(a.Atype))
 			}
 		}
 	} else {
-		fmt.Println(strings.Repeat("  ", generation) + "None")
+		fmt.Println(strings.Repeat("    ", generation) + "None")
 	}
 	generation++
 	for _, ch := range p.Children {
